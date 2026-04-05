@@ -263,15 +263,23 @@ func tokenizeInput(input string) ([]Token, error) {
 			if t.Type != "" {
 				switch t.Type {
 				case LineComment:
+					flushCurrent()
+					tokens = append(tokens, t)
 					isInLineComment = true
+					i++
+					continue
 				case BlockCommentStart:
+					flushCurrent()
+					tokens = append(tokens, t)
 					isInBlockComment = true
+					i++
+					continue
 				default:
 					flushCurrent()
+					tokens = append(tokens, t)
 				}
 
-				tokens = append(tokens, t)
-				i++ // Skip the next character since it's part of the double operator.
+				i++
 				continue
 			}
 		}
