@@ -8,6 +8,10 @@ import (
 )
 
 func main() {
+	if len(os.Args) < 2 {
+		fmt.Println("Usage: go run main.go <source-file>")
+		return
+	}
 
 	args := os.Args[1]
 
@@ -28,16 +32,19 @@ func main() {
 		return
 	}
 
-	tokens, err := parser.TokenizeInput(string(source))
+	parser, err := parser.NewParser(string(source))
+
+	if err != nil {
+		fmt.Printf("Error initializing parser: %s\n", err)
+		return
+	}
+
+	ast, err := parser.GetAst()
 
 	if err != nil {
 		fmt.Printf("Error tokenizing input: %s\n", err)
 		return
 	}
 
-	for _, token := range tokens {
-		fmt.Printf("%s: '%s'\n", token.Type, token.Value)
-	}
-
-	// TODO: Parsing
+	fmt.Printf("Parsed AST: %+v\n", ast)
 }
