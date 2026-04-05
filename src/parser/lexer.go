@@ -4,24 +4,8 @@ import (
 	"errors"
 )
 
-type ReservedKeyword string
-
-const (
-	If         ReservedKeyword = "If"
-	Else       ReservedKeyword = "Else"
-	ElseIf     ReservedKeyword = "ElseIf"
-	For        ReservedKeyword = "For"
-	Return     ReservedKeyword = "Return"
-	Function   ReservedKeyword = "Function"
-	In         ReservedKeyword = "In"
-	IntType    ReservedKeyword = "IntType"
-	StringType ReservedKeyword = "StringType"
-	BoolType   ReservedKeyword = "BoolType"
-	FloatType  ReservedKeyword = "FloatType"
-)
-
-func getKeywords() map[string]ReservedKeyword {
-	return map[string]ReservedKeyword{
+func getKeywords() map[string]TokenType {
+	return map[string]TokenType{
 		"if":     If,
 		"else":   Else,
 		"elseif": ElseIf,
@@ -102,6 +86,18 @@ const (
 	LeftShift          TokenType = "LeftShift"
 	RightShift         TokenType = "RightShift"
 	EOF                TokenType = "EOF"
+
+	If         TokenType = "If"
+	Else       TokenType = "Else"
+	ElseIf     TokenType = "ElseIf"
+	For        TokenType = "For"
+	Return     TokenType = "Return"
+	Function   TokenType = "Function"
+	In         TokenType = "In"
+	IntType    TokenType = "IntType"
+	StringType TokenType = "StringType"
+	BoolType   TokenType = "BoolType"
+	FloatType  TokenType = "FloatType"
 )
 
 type Token struct {
