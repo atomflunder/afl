@@ -4,21 +4,38 @@ import (
 	"errors"
 )
 
-func getKeywords() map[string]string {
-	return map[string]string{
-		"if":     "If",
-		"else":   "Else",
-		"elseif": "ElseIf",
-		"for":    "For",
-		"return": "Return",
-		"fn":     "Function",
-		"in":     "In",
-		"int":    "IntType",
-		"string": "StringType",
-		"bool":   "BoolType",
-		"float":  "FloatType",
+type ReservedKeyword string
+
+const (
+	If         ReservedKeyword = "If"
+	Else       ReservedKeyword = "Else"
+	ElseIf     ReservedKeyword = "ElseIf"
+	For        ReservedKeyword = "For"
+	Return     ReservedKeyword = "Return"
+	Function   ReservedKeyword = "Function"
+	In         ReservedKeyword = "In"
+	IntType    ReservedKeyword = "IntType"
+	StringType ReservedKeyword = "StringType"
+	BoolType   ReservedKeyword = "BoolType"
+	FloatType  ReservedKeyword = "FloatType"
+)
+
+func getKeywords() map[string]ReservedKeyword {
+	return map[string]ReservedKeyword{
+		"if":     If,
+		"else":   Else,
+		"elseif": ElseIf,
+		"for":    For,
+		"return": Return,
+		"fn":     Function,
+		"in":     In,
+		"int":    IntType,
+		"string": StringType,
+		"bool":   BoolType,
+		"float":  FloatType,
 	}
 }
+
 func isAlpha(c byte) bool {
 	return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_'
 }
@@ -146,7 +163,7 @@ func tokenizeInput(input string) ([]Token, error) {
 	flushCurrent := func() {
 		if currentToken != "" {
 			if isKeyword(currentToken) {
-				tokens = append(tokens, Token{Type: getKeywords()[currentToken], Value: currentToken})
+				tokens = append(tokens, Token{Type: string(getKeywords()[currentToken]), Value: currentToken})
 			} else {
 				tokens = append(tokens, Token{Type: "Identifier", Value: currentToken})
 			}
