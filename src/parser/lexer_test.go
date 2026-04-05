@@ -6,25 +6,25 @@ import (
 )
 
 func TestIsAlpha(t *testing.T) {
-	if !IsAlpha('a') || !IsAlpha('Z') || IsAlpha('1') {
+	if !isAlpha('a') || !isAlpha('Z') || isAlpha('1') {
 		t.Errorf("IsAlpha failed")
 	}
 }
 
 func TestIsDigit(t *testing.T) {
-	if !IsDigit('0') || !IsDigit('9') || IsDigit('a') {
+	if !isDigit('0') || !isDigit('9') || isDigit('a') {
 		t.Errorf("IsDigit failed")
 	}
 }
 
 func TestIsWhitespace(t *testing.T) {
-	if !IsWhitespace(' ') || !IsWhitespace('\n') || IsWhitespace('a') {
+	if !isWhitespace(' ') || !isWhitespace('\n') || isWhitespace('a') {
 		t.Errorf("IsWhitespace failed")
 	}
 }
 
 func TestIsKeyword(t *testing.T) {
-	if !IsKeyword("if") || !IsKeyword("return") || !IsKeyword("fn") || IsKeyword("x") {
+	if !isKeyword("if") || !isKeyword("return") || !isKeyword("fn") || isKeyword("x") {
 		t.Errorf("IsKeyword failed")
 	}
 }
@@ -39,7 +39,7 @@ func TestQuoteHandling(t *testing.T) {
 		{Type: "EOF", Value: "EndOfFile"},
 	}
 
-	tokens, err := TokenizeInput(input)
+	tokens, err := tokenizeInput(input)
 
 	if err != nil {
 		t.Errorf("TokenizeInput failed with error: %s", err)
@@ -58,7 +58,7 @@ func TestQuoteHandling(t *testing.T) {
 
 func TestInvalidQuoteHandling(t *testing.T) {
 	input := `print("Hello, World!)`
-	tokens, err := TokenizeInput(input)
+	tokens, err := tokenizeInput(input)
 
 	wantErr := errors.New("Unterminated string literal")
 
@@ -73,7 +73,7 @@ func TestInvalidQuoteHandling(t *testing.T) {
 
 func TestUnregonizedToken(t *testing.T) {
 	input := `@`
-	tokens, err := TokenizeInput(input)
+	tokens, err := tokenizeInput(input)
 
 	wantErr := errors.New("Unrecognized character: @")
 
@@ -104,7 +104,7 @@ x = 5 /* This is another block comment */
 		{Type: "EOF", Value: "EndOfFile"},
 	}
 
-	tokens, err := TokenizeInput(input)
+	tokens, err := tokenizeInput(input)
 
 	if err != nil {
 		t.Errorf("TokenizeInput failed with error: %s", err)
@@ -164,7 +164,7 @@ func TestTokenizeInput(t *testing.T) {
 		{Type: "EOF", Value: "EndOfFile"},
 	}
 
-	tokens, err := TokenizeInput(input)
+	tokens, err := tokenizeInput(input)
 
 	if err != nil {
 		t.Errorf("TokenizeInput failed with error: %s", err)
@@ -321,7 +321,7 @@ for (i in 0->5) {
 		{Type: "EOF", Value: "EndOfFile"},
 	}
 
-	tokens, err := TokenizeInput(input)
+	tokens, err := tokenizeInput(input)
 
 	if err != nil {
 		t.Errorf("TokenizeInput failed with error: %s", err)
@@ -341,7 +341,7 @@ for (i in 0->5) {
 func TestEmpty(t *testing.T) {
 	input := ""
 
-	_, err := TokenizeInput(input)
+	_, err := tokenizeInput(input)
 
 	if err == nil {
 		t.Errorf("TokenizeInput should have failed with an error for empty input")

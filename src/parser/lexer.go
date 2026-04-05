@@ -19,27 +19,27 @@ func getKeywords() map[string]string {
 		"float":  "FloatType",
 	}
 }
-func IsAlpha(c byte) bool {
+func isAlpha(c byte) bool {
 	return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_'
 }
 
-func IsDigit(c byte) bool {
+func isDigit(c byte) bool {
 	return c >= '0' && c <= '9'
 }
 
 // If the character is a whitespace character, it is used to separate tokens.
-func IsWhitespace(c byte) bool {
+func isWhitespace(c byte) bool {
 	return c == ' ' || c == '\t' || c == '\n' || c == '\r'
 }
 
 // Checks if a string is recognized as a keyword in the language.
-func IsKeyword(s string) bool {
+func isKeyword(s string) bool {
 	_, exists := getKeywords()[s]
 	return exists
 }
 
 // Double quotes are used for string literals.
-func IsDoubleQuote(c byte) bool {
+func isDoubleQuote(c byte) bool {
 	return c == '"'
 }
 
@@ -133,7 +133,7 @@ func handleDoubleOperators(c byte, next byte) Token {
 	return Token{}
 }
 
-func TokenizeInput(input string) ([]Token, error) {
+func tokenizeInput(input string) ([]Token, error) {
 	var tokens []Token
 
 	var isInQuote bool = false
@@ -145,7 +145,7 @@ func TokenizeInput(input string) ([]Token, error) {
 
 	flushCurrent := func() {
 		if currentToken != "" {
-			if IsKeyword(currentToken) {
+			if isKeyword(currentToken) {
 				tokens = append(tokens, Token{Type: getKeywords()[currentToken], Value: currentToken})
 			} else {
 				tokens = append(tokens, Token{Type: "Identifier", Value: currentToken})
@@ -185,7 +185,7 @@ func TokenizeInput(input string) ([]Token, error) {
 		}
 
 		// First we handle string literals because they can contain characters that would otherwise be treated as operators or identifiers.
-		if IsDoubleQuote(c) {
+		if isDoubleQuote(c) {
 			isInQuote = !isInQuote
 
 			if !isInQuote {
@@ -228,7 +228,7 @@ func TokenizeInput(input string) ([]Token, error) {
 		}
 
 		// Handling numbers easily by casting them into a string.
-		if IsDigit(c) {
+		if isDigit(c) {
 			currentNumber += string(c)
 			continue
 		} else {
@@ -238,14 +238,14 @@ func TokenizeInput(input string) ([]Token, error) {
 		}
 
 		// Every other identifier is handled by checking if it's a keyword or not.
-		if IsAlpha(c) {
+		if isAlpha(c) {
 			currentToken += string(c)
 			continue
 		} else {
 			flushCurrent()
 		}
 
-		if IsWhitespace(c) {
+		if isWhitespace(c) {
 			continue
 		}
 
