@@ -60,8 +60,52 @@ func isDoubleQuote(c byte) bool {
 	return c == '"'
 }
 
+type TokenType string
+
+const (
+	Identifier         TokenType = "Identifier"
+	NumberLiteral      TokenType = "NumberLiteral"
+	StringLiteral      TokenType = "StringLiteral"
+	OpenParen          TokenType = "OpenParen"
+	CloseParen         TokenType = "CloseParen"
+	OpenCurly          TokenType = "OpenCurly"
+	CloseCurly         TokenType = "CloseCurly"
+	OpenSquare         TokenType = "OpenSquare"
+	CloseSquare        TokenType = "CloseSquare"
+	Plus               TokenType = "Plus"
+	Minus              TokenType = "Minus"
+	Asterisk           TokenType = "Asterisk"
+	Slash              TokenType = "Slash"
+	Percent            TokenType = "Percent"
+	LessThan           TokenType = "LessThan"
+	GreaterThan        TokenType = "GreaterThan"
+	Equals             TokenType = "Equals"
+	ExclamationMark    TokenType = "ExclamationMark"
+	QuestionMark       TokenType = "QuestionMark"
+	Semicolon          TokenType = "Semicolon"
+	Colon              TokenType = "Colon"
+	Comma              TokenType = "Comma"
+	Period             TokenType = "Period"
+	EqualsEquals       TokenType = "EqualsEquals"
+	NotEquals          TokenType = "NotEquals"
+	LessThanOrEqual    TokenType = "LessThanOrEqual"
+	GreaterThanOrEqual TokenType = "GreaterThanOrEqual"
+	LogicalAnd         TokenType = "LogicalAnd"
+	LogicalOr          TokenType = "LogicalOr"
+	Increment          TokenType = "Increment"
+	Decrement          TokenType = "Decrement"
+	LineComment        TokenType = "LineComment"
+	BlockCommentStart  TokenType = "BlockCommentStart"
+	BlockCommentEnd    TokenType = "BlockCommentEnd"
+	ArrowRight         TokenType = "ArrowRight"
+	ArrowLeft          TokenType = "ArrowLeft"
+	LeftShift          TokenType = "LeftShift"
+	RightShift         TokenType = "RightShift"
+	EOF                TokenType = "EOF"
+)
+
 type Token struct {
-	Type  string
+	Type  TokenType
 	Value string
 }
 
@@ -69,45 +113,45 @@ type Token struct {
 func handleSingleOperators(c byte) Token {
 	switch c {
 	case '(':
-		return Token{Type: "OpenParen", Value: "("}
+		return Token{Type: OpenParen, Value: "("}
 	case ')':
-		return Token{Type: "CloseParen", Value: ")"}
+		return Token{Type: CloseParen, Value: ")"}
 	case '{':
-		return Token{Type: "OpenCurly", Value: "{"}
+		return Token{Type: OpenCurly, Value: "{"}
 	case '}':
-		return Token{Type: "CloseCurly", Value: "}"}
+		return Token{Type: CloseCurly, Value: "}"}
 	case '[':
-		return Token{Type: "OpenSquare", Value: "["}
+		return Token{Type: OpenSquare, Value: "["}
 	case ']':
-		return Token{Type: "CloseSquare", Value: "]"}
+		return Token{Type: CloseSquare, Value: "]"}
 	case '+':
-		return Token{Type: "Plus", Value: "+"}
+		return Token{Type: Plus, Value: "+"}
 	case '-':
-		return Token{Type: "Minus", Value: "-"}
+		return Token{Type: Minus, Value: "-"}
 	case '*':
-		return Token{Type: "Asterisk", Value: "*"}
+		return Token{Type: Asterisk, Value: "*"}
 	case '/':
-		return Token{Type: "Slash", Value: "/"}
+		return Token{Type: Slash, Value: "/"}
 	case '%':
-		return Token{Type: "Percent", Value: "%"}
+		return Token{Type: Percent, Value: "%"}
 	case '<':
-		return Token{Type: "LessThan", Value: "<"}
+		return Token{Type: LessThan, Value: "<"}
 	case '>':
-		return Token{Type: "GreaterThan", Value: ">"}
+		return Token{Type: GreaterThan, Value: ">"}
 	case '=':
-		return Token{Type: "Equals", Value: "="}
+		return Token{Type: Equals, Value: "="}
 	case '!':
-		return Token{Type: "ExclamationMark", Value: "!"}
+		return Token{Type: ExclamationMark, Value: "!"}
 	case '?':
-		return Token{Type: "QuestionMark", Value: "?"}
+		return Token{Type: QuestionMark, Value: "?"}
 	case ';':
-		return Token{Type: "Semicolon", Value: ";"}
+		return Token{Type: Semicolon, Value: ";"}
 	case ':':
-		return Token{Type: "Colon", Value: ":"}
+		return Token{Type: Colon, Value: ":"}
 	case ',':
-		return Token{Type: "Comma", Value: ","}
+		return Token{Type: Comma, Value: ","}
 	case '.':
-		return Token{Type: "Period", Value: "."}
+		return Token{Type: Period, Value: "."}
 	}
 
 	return Token{}
@@ -116,35 +160,35 @@ func handleSingleOperators(c byte) Token {
 // Handles double-character operators like '==', '!=', '<=', '>=', '&&', '||', '++', '--'.
 func handleDoubleOperators(c byte, next byte) Token {
 	if c == '=' && next == '=' {
-		return Token{Type: "EqualsEquals", Value: "=="}
+		return Token{Type: EqualsEquals, Value: "=="}
 	} else if c == '!' && next == '=' {
-		return Token{Type: "NotEquals", Value: "!="}
+		return Token{Type: NotEquals, Value: "!="}
 	} else if c == '<' && next == '=' {
-		return Token{Type: "LessThanOrEqual", Value: "<="}
+		return Token{Type: LessThanOrEqual, Value: "<="}
 	} else if c == '>' && next == '=' {
-		return Token{Type: "GreaterThanOrEqual", Value: ">="}
+		return Token{Type: GreaterThanOrEqual, Value: ">="}
 	} else if c == '<' && next == '<' {
-		return Token{Type: "LeftShift", Value: "<<"}
+		return Token{Type: LeftShift, Value: "<<"}
 	} else if c == '>' && next == '>' {
-		return Token{Type: "RightShift", Value: ">>"}
+		return Token{Type: RightShift, Value: ">>"}
 	} else if c == '&' && next == '&' {
-		return Token{Type: "LogicalAnd", Value: "&&"}
+		return Token{Type: LogicalAnd, Value: "&&"}
 	} else if c == '|' && next == '|' {
-		return Token{Type: "LogicalOr", Value: "||"}
+		return Token{Type: LogicalOr, Value: "||"}
 	} else if c == '+' && next == '+' {
-		return Token{Type: "Increment", Value: "++"}
+		return Token{Type: Increment, Value: "++"}
 	} else if c == '-' && next == '-' {
-		return Token{Type: "Decrement", Value: "--"}
+		return Token{Type: Decrement, Value: "--"}
 	} else if c == '/' && next == '/' {
-		return Token{Type: "LineComment", Value: "//"}
+		return Token{Type: LineComment, Value: "//"}
 	} else if c == '/' && next == '*' {
-		return Token{Type: "BlockCommentStart", Value: "/*"}
+		return Token{Type: BlockCommentStart, Value: "/*"}
 	} else if c == '*' && next == '/' {
-		return Token{Type: "BlockCommentEnd", Value: "*/"}
+		return Token{Type: BlockCommentEnd, Value: "*/"}
 	} else if c == '-' && next == '>' {
-		return Token{Type: "ArrowRight", Value: "->"}
+		return Token{Type: ArrowRight, Value: "->"}
 	} else if c == '<' && next == '-' {
-		return Token{Type: "ArrowLeft", Value: "<-"}
+		return Token{Type: ArrowLeft, Value: "<-"}
 	}
 
 	return Token{}
@@ -163,16 +207,16 @@ func tokenizeInput(input string) ([]Token, error) {
 	flushCurrent := func() {
 		if currentToken != "" {
 			if isKeyword(currentToken) {
-				tokens = append(tokens, Token{Type: string(getKeywords()[currentToken]), Value: currentToken})
+				tokens = append(tokens, Token{Type: TokenType(getKeywords()[currentToken]), Value: currentToken})
 			} else {
-				tokens = append(tokens, Token{Type: "Identifier", Value: currentToken})
+				tokens = append(tokens, Token{Type: Identifier, Value: currentToken})
 			}
 			currentToken = ""
 		} else if currentNumber != "" {
-			tokens = append(tokens, Token{Type: "NumberLiteral", Value: currentNumber})
+			tokens = append(tokens, Token{Type: NumberLiteral, Value: currentNumber})
 			currentNumber = ""
 		} else if currentString != "" {
-			tokens = append(tokens, Token{Type: "StringLiteral", Value: currentString})
+			tokens = append(tokens, Token{Type: StringLiteral, Value: currentString})
 			currentString = ""
 		}
 	}
@@ -190,7 +234,7 @@ func tokenizeInput(input string) ([]Token, error) {
 		if isInBlockComment {
 			if i+1 < len(input) {
 				t := handleDoubleOperators(c, input[i+1])
-				if t.Type == "BlockCommentEnd" {
+				if t.Type == BlockCommentEnd {
 					isInBlockComment = false
 					tokens = append(tokens, t)
 					i++ // Skip the next character since it's part of the block comment end operator.
@@ -222,9 +266,9 @@ func tokenizeInput(input string) ([]Token, error) {
 			t := handleDoubleOperators(c, next)
 			if t.Type != "" {
 				switch t.Type {
-				case "LineComment":
+				case LineComment:
 					isInLineComment = true
-				case "BlockCommentStart":
+				case BlockCommentStart:
 					isInBlockComment = true
 				default:
 					flushCurrent()
@@ -279,7 +323,7 @@ func tokenizeInput(input string) ([]Token, error) {
 		return nil, errors.New("No tokens found in input")
 	}
 
-	tokens = append(tokens, Token{Type: "EOF", Value: "EndOfFile"})
+	tokens = append(tokens, Token{Type: EOF, Value: "EndOfFile"})
 
 	return tokens, nil
 }
