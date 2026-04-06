@@ -34,7 +34,7 @@ func Evaluate(expr parser.Expression, env *Environment) RuntimeValue {
 	case parser.NumberLiteralExpression:
 		return evaluateNumberLiteral(node)
 	case parser.StringLiteralExpression:
-		return evaluateStringLiteral(node)
+		return evaluateStringLiteral(node, env)
 	case parser.IdentifierExpression:
 		return evaluateIdentifier(node, env)
 	case parser.BinaryExpression:
@@ -68,8 +68,57 @@ func evaluateNumberLiteral(node parser.NumberLiteralExpression) RuntimeValue {
 	return RuntimeValue{Type: "number", Value: value}
 }
 
-func evaluateStringLiteral(node parser.StringLiteralExpression) RuntimeValue {
-	return RuntimeValue{Type: "string", Value: node.Value}
+func evaluateStringLiteral(node parser.StringLiteralExpression, env *Environment) RuntimeValue {
+	interpolated := interpolateString(node.Value, env)
+	return RuntimeValue{Type: "string", Value: interpolated}
+}
+
+// interpolateString replaces {variable} patterns with actual variable values
+func interpolateString(str string, env *Environment) string {
+	result := str
+	i := 0
+
+	for i < len(result) {
+		// Find opening brace
+		openIdx := strings.Index(result[i:], "{")
+		if openIdx == -1 {
+			break
+		}
+
+		openIdx += i
+
+		// Find closing brace
+		closeIdx := strings.Index(result[openIdx:], "}")
+		if closeIdx == -1 {
+			break
+		}
+
+		closeIdx += openIdx
+
+		// Extract variable name
+		varName := result[openIdx+1 : closeIdx]
+
+		// Look up the variable
+		val, err := env.getVariable(varName)
+		if err == nil {
+			// Convert value to string
+			var strVal string
+			if rv, ok := val.(RuntimeValue); ok {
+				strVal = runtimeValueToString(rv)
+			} else {
+				strVal = fmt.Sprintf("%v", val)
+			}
+
+			// Replace the pattern with the value
+			result = result[:openIdx] + strVal + result[closeIdx+1:]
+			i = openIdx + len(strVal)
+		} else {
+			// Variable not found, move past this brace
+			i = closeIdx + 1
+		}
+	}
+
+	return result
 }
 
 func evaluateIdentifier(node parser.IdentifierExpression, env *Environment) RuntimeValue {

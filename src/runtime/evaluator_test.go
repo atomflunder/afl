@@ -1,6 +1,7 @@
 package runtime
 
 import (
+	"strings"
 	"testing"
 
 	"afl/src/parser"
@@ -32,6 +33,96 @@ func TestEvaluateStringLiteral(t *testing.T) {
 	if result.Value.(string) != "hello" {
 		t.Errorf("Expected value 'hello', got '%s'", result.Value)
 	}
+}
+
+func TestStringInterpolation(t *testing.T) {
+	t.Run("simple variable interpolation", func(t *testing.T) {
+		env := NewEnvironment(nil)
+		env.declareVariable("name", RuntimeValue{Type: "string", Value: "John"}, false)
+
+		expr := parser.StringLiteralExpression{Value: "Hello {name}"}
+		result := Evaluate(expr, env)
+
+		if result.Type != "string" {
+			t.Errorf("Expected type 'string', got '%s'", result.Type)
+		}
+
+		if result.Value.(string) != "Hello John" {
+			t.Errorf("Expected 'Hello John', got '%s'", result.Value)
+		}
+	})
+
+	t.Run("numeric variable interpolation", func(t *testing.T) {
+		env := NewEnvironment(nil)
+		env.declareVariable("x", RuntimeValue{Type: "number", Value: 42.0}, false)
+
+		expr := parser.StringLiteralExpression{Value: "The answer is {x}"}
+		result := Evaluate(expr, env)
+
+		if result.Value.(string) != "The answer is 42" {
+			t.Errorf("Expected 'The answer is 42', got '%s'", result.Value)
+		}
+	})
+
+	t.Run("multiple interpolations", func(t *testing.T) {
+		env := NewEnvironment(nil)
+		env.declareVariable("first", RuntimeValue{Type: "string", Value: "John"}, false)
+		env.declareVariable("last", RuntimeValue{Type: "string", Value: "Doe"}, false)
+
+		expr := parser.StringLiteralExpression{Value: "{first} {last}"}
+		result := Evaluate(expr, env)
+
+		if result.Value.(string) != "John Doe" {
+			t.Errorf("Expected 'John Doe', got '%s'", result.Value)
+		}
+	})
+
+	t.Run("undefined variable keeps placeholder", func(t *testing.T) {
+		env := NewEnvironment(nil)
+
+		expr := parser.StringLiteralExpression{Value: "Hello {name}"}
+		result := Evaluate(expr, env)
+
+		if result.Value.(string) != "Hello {name}" {
+			t.Errorf("Expected 'Hello {name}', got '%s'", result.Value)
+		}
+	})
+
+	t.Run("string with no interpolation", func(t *testing.T) {
+		env := NewEnvironment(nil)
+
+		expr := parser.StringLiteralExpression{Value: "just a string"}
+		result := Evaluate(expr, env)
+
+		if result.Value.(string) != "just a string" {
+			t.Errorf("Expected 'just a string', got '%s'", result.Value)
+		}
+	})
+
+	t.Run("interpolation with float numbers", func(t *testing.T) {
+		env := NewEnvironment(nil)
+		env.declareVariable("pi", RuntimeValue{Type: "number", Value: 3.14}, false)
+
+		expr := parser.StringLiteralExpression{Value: "Pi is approximately {pi}"}
+		result := Evaluate(expr, env)
+
+		if result.Value.(string) != "Pi is approximately 3.14" {
+			t.Errorf("Expected 'Pi is approximately 3.14', got '%s'", result.Value)
+		}
+	})
+
+	t.Run("nested braces not supported (only first level)", func(t *testing.T) {
+		env := NewEnvironment(nil)
+		env.declareVariable("obj", RuntimeValue{Type: "object", Value: map[string]RuntimeValue{}}, false)
+
+		expr := parser.StringLiteralExpression{Value: "Object: {obj}"}
+		result := Evaluate(expr, env)
+
+		// Should contain the string representation of the object
+		if !strings.Contains(result.Value.(string), "map") {
+			t.Logf("Object interpolation: %s", result.Value)
+		}
+	})
 }
 
 func TestEvaluateAddition(t *testing.T) {

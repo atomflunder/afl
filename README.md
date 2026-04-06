@@ -42,6 +42,18 @@ for (i in 0->5) {
 }
 ```
 
+The script will produce the following output:
+
+```sh
+Hello, World!
+x is greater than 3 but actually 5
+0
+1
+2
+3
+4
+```
+
 ## Usage
 
 Build the compiler:
