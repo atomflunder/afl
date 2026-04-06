@@ -1,0 +1,24 @@
+name: Build & Run afl Examples
+on: [push, pull_request]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v5
+
+            - name: Setup Go
+              uses: actions/setup-go@v5
+              with:
+                  go-version: "1.26.x"
+
+            - name: Build Go Project
+              run: go build -v -o afl ./src/main.go
+
+            - name: Run examples
+              run: |
+                  for file in examples/*.afl; do
+                    echo "Running $file..."
+                    ./afl --ast --tokens "$file"
+                  done
