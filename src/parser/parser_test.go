@@ -58,7 +58,8 @@ func TestParseVariableDeclaration(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			parser, err := NewParser(tt.input)
+			tokens, err := TokenizeInput(tt.input)
+			parser := NewParser(tokens)
 			if err != nil {
 				t.Fatalf("Failed to create parser: %s", err)
 			}
@@ -128,7 +129,8 @@ func TestParseFunctionDeclaration(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			parser, err := NewParser(tt.input)
+			tokens, err := TokenizeInput(tt.input)
+			parser := NewParser(tokens)
 			if err != nil {
 				t.Fatalf("Failed to create parser: %s", err)
 			}
@@ -199,7 +201,8 @@ func TestParseIfStatement(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			parser, err := NewParser(tt.input)
+			tokens, err := TokenizeInput(tt.input)
+			parser := NewParser(tokens)
 			if err != nil {
 				t.Fatalf("Failed to create parser: %s", err)
 			}
@@ -259,7 +262,8 @@ func TestParseForLoop(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			parser, err := NewParser(tt.input)
+			tokens, err := TokenizeInput(tt.input)
+			parser := NewParser(tokens)
 			if err != nil {
 				t.Fatalf("Failed to create parser: %s", err)
 			}
@@ -337,7 +341,8 @@ func TestParseFunctionCall(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			parser, err := NewParser(tt.input)
+			tokens, err := TokenizeInput(tt.input)
+			parser := NewParser(tokens)
 			if err != nil {
 				t.Fatalf("Failed to create parser: %s", err)
 			}
@@ -440,7 +445,8 @@ func TestParseBinaryExpression(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			parser, err := NewParser(tt.input)
+			tokens, err := TokenizeInput(tt.input)
+			parser := NewParser(tokens)
 			if err != nil {
 				t.Fatalf("Failed to create parser: %s", err)
 			}
@@ -493,7 +499,8 @@ func TestParseUnaryExpression(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			parser, err := NewParser(tt.input)
+			tokens, err := TokenizeInput(tt.input)
+			parser := NewParser(tokens)
 			if err != nil {
 				t.Fatalf("Failed to create parser: %s", err)
 			}
@@ -536,7 +543,8 @@ func TestParseMemberExpression(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			parser, err := NewParser(tt.input)
+			tokens, err := TokenizeInput(tt.input)
+			parser := NewParser(tokens)
 			if err != nil {
 				t.Fatalf("Failed to create parser: %s", err)
 			}
@@ -579,7 +587,8 @@ func TestParseAssignmentExpression(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			parser, err := NewParser(tt.input)
+			tokens, err := TokenizeInput(tt.input)
+			parser := NewParser(tokens)
 			if err != nil {
 				t.Fatalf("Failed to create parser: %s", err)
 			}
@@ -631,7 +640,8 @@ func TestParseCompleteProgram(t *testing.T) {
 	}
 	`
 
-	parser, err := NewParser(input)
+	tokens, err := TokenizeInput(input)
+	parser := NewParser(tokens)
 	if err != nil {
 		t.Fatalf("Failed to create parser: %s", err)
 	}
@@ -715,7 +725,8 @@ func TestParseExpression(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			parser, err := NewParser(tt.input)
+			tokens, err := TokenizeInput(tt.input)
+			parser := NewParser(tokens)
 			if err != nil {
 				t.Fatalf("Failed to create parser: %s", err)
 			}
@@ -771,7 +782,8 @@ func TestParseSemicolons(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			parser, err := NewParser(tt.input)
+			tokens, err := TokenizeInput(tt.input)
+			parser := NewParser(tokens)
 			if err != nil {
 				t.Fatalf("Failed to create parser: %s", err)
 			}
@@ -829,7 +841,8 @@ func TestParseIdentifiersAndLiterals(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			parser, err := NewParser(tt.input)
+			tokens, err := TokenizeInput(tt.input)
+			parser := NewParser(tokens)
 			if err != nil {
 				t.Fatalf("Failed to create parser: %s", err)
 			}
@@ -872,7 +885,8 @@ func TestParserOperatorPrecedence(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			parser, err := NewParser(tt.input)
+			tokens, err := TokenizeInput(tt.input)
+			parser := NewParser(tokens)
 			if err != nil {
 				t.Fatalf("Failed to create parser: %s", err)
 			}
@@ -920,7 +934,8 @@ func TestParseEmptyStructures(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			parser, err := NewParser(tt.input)
+			tokens, err := TokenizeInput(tt.input)
+			parser := NewParser(tokens)
 			if err != nil {
 				t.Fatalf("Failed to create parser: %s", err)
 			}
@@ -973,7 +988,8 @@ func TestParseTypeAnnotations(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			parser, err := NewParser(tt.input)
+			tokens, err := TokenizeInput(tt.input)
+			parser := NewParser(tokens)
 			if err != nil {
 				t.Fatalf("Failed to create parser: %s", err)
 			}
@@ -1016,7 +1032,8 @@ func TestParseWithComments(t *testing.T) {
 	z = 15
 	`
 
-	parser, err := NewParser(input)
+	tokens, err := TokenizeInput(input)
+	parser := NewParser(tokens)
 	if err != nil {
 		t.Fatalf("Failed to create parser: %s", err)
 	}

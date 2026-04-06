@@ -39,7 +39,7 @@ func TestQuoteHandling(t *testing.T) {
 		{Type: "EOF", Value: "EndOfFile"},
 	}
 
-	tokens, err := tokenizeInput(input)
+	tokens, err := TokenizeInput(input)
 
 	if err != nil {
 		t.Errorf("TokenizeInput failed with error: %s", err)
@@ -58,7 +58,7 @@ func TestQuoteHandling(t *testing.T) {
 
 func TestInvalidQuoteHandling(t *testing.T) {
 	input := `print("Hello, World!)`
-	tokens, err := tokenizeInput(input)
+	tokens, err := TokenizeInput(input)
 
 	wantErr := errors.New("Unterminated string literal")
 
@@ -73,7 +73,7 @@ func TestInvalidQuoteHandling(t *testing.T) {
 
 func TestUnregonizedToken(t *testing.T) {
 	input := `@`
-	tokens, err := tokenizeInput(input)
+	tokens, err := TokenizeInput(input)
 
 	wantErr := errors.New("Unrecognized character: @")
 
@@ -104,7 +104,7 @@ x = 5 /* This is another block comment */
 		{Type: "EOF", Value: "EndOfFile"},
 	}
 
-	tokens, err := tokenizeInput(input)
+	tokens, err := TokenizeInput(input)
 
 	if err != nil {
 		t.Errorf("TokenizeInput failed with error: %s", err)
@@ -164,7 +164,7 @@ func TestTokenizeInput(t *testing.T) {
 		{Type: "EOF", Value: "EndOfFile"},
 	}
 
-	tokens, err := tokenizeInput(input)
+	tokens, err := TokenizeInput(input)
 
 	if err != nil {
 		t.Errorf("TokenizeInput failed with error: %s", err)
@@ -321,7 +321,7 @@ for (i in 0->5) {
 		{Type: "EOF", Value: "EndOfFile"},
 	}
 
-	tokens, err := tokenizeInput(input)
+	tokens, err := TokenizeInput(input)
 
 	if err != nil {
 		t.Errorf("TokenizeInput failed with error: %s", err)
@@ -341,7 +341,7 @@ for (i in 0->5) {
 func TestEmpty(t *testing.T) {
 	input := ""
 
-	_, err := tokenizeInput(input)
+	_, err := TokenizeInput(input)
 
 	if err == nil {
 		t.Errorf("TokenizeInput should have failed with an error for empty input")

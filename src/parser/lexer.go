@@ -190,7 +190,7 @@ func handleDoubleOperators(c byte, next byte) Token {
 	return Token{}
 }
 
-func tokenizeInput(input string) ([]Token, error) {
+func TokenizeInput(input string) ([]Token, error) {
 	var tokens []Token
 
 	var isInQuote bool = false

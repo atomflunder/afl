@@ -7,13 +7,8 @@ type Parser struct {
 }
 
 // Returns a new parser instance of the given input string.
-func NewParser(input string) (*Parser, error) {
-	tokens, err := tokenizeInput(input)
-	if err != nil {
-		return nil, err
-	}
-
-	return &Parser{tokens: tokens}, nil
+func NewParser(tokens []Token) *Parser {
+	return &Parser{tokens: tokens}
 }
 
 // Checks if it is not the end of the file (EOF) token.
