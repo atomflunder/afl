@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 
@@ -9,31 +10,37 @@ import (
 )
 
 func main() {
-	if len(os.Args) < 2 {
-		fmt.Println("Usage: go run main.go <source-file>")
+	astFlag := flag.Bool("ast", false, "print AST")
+	tokenFlag := flag.Bool("tokens", false, "print Tokens")
+	flag.Parse()
+
+	args := flag.Args()
+	if len(args) < 1 {
+		fmt.Println("Usage: afl [options] <source-file>")
 		return
 	}
 
-	args := os.Args[1]
+	filename := args[0]
 
-	if args == "" {
-		fmt.Println("Usage: go run main.go <source-file>")
-		return
-	}
-
-	source, err := os.ReadFile(args)
-
-	if len(args) < 4 || args[len(args)-4:] != ".afl" {
+	if len(filename) < 4 || filename[len(filename)-4:] != ".afl" {
 		fmt.Printf("Error: File must have .afl extension\n")
 		return
 	}
+
+	source, err := os.ReadFile(filename)
 
 	if err != nil {
 		fmt.Printf("Error reading file: %s\n", err)
 		return
 	}
 
-	parser, err := parser.NewParser(string(source))
+	tokens, err := parser.TokenizeInput(string(source))
+
+	if *tokenFlag {
+		fmt.Printf("Tokens: %v\n", tokens)
+	}
+
+	parser := parser.NewParser(tokens)
 
 	if err != nil {
 		fmt.Printf("Error initializing parser: %s\n", err)
@@ -47,7 +54,10 @@ func main() {
 		return
 	}
 
-	// Evaluate the AST
+	if *astFlag {
+		fmt.Printf("AST: %v\n", ast)
+	}
+
 	env := runtime.NewEnvironment(nil)
 	runtime.EvaluateProgram(ast, env)
 }
