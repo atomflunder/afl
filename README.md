@@ -12,12 +12,10 @@ Very simple scripting language that will bring literally nothing new to the tabl
 */
 
 x = 5           // Type inference
-y: int = 6      // Explicit type annotation
 z: float = 7.0  // Explicit type annotation
+z = 8.5         // Will not do anything, not mutable
 
-z = 8.5 // Forbidden
-
-a? = 10 // Mutable
+a? = 10 // Declared as mutable
 a = 15  // Allowed
 
 fn a_function() {
@@ -32,9 +30,7 @@ if (x > 3) {
     print("x is greater than 3 but actually {x}")
 } elseif (x == 3) {
     print("x is equal to 3")
-} else {
-    print("x is less than 3")
-}
+} else { print("x is less than 3") } // Whitespace does not matter
 
 for (i in 0->5) {
     print(i)
@@ -52,6 +48,8 @@ x is greater than 3 but actually 5
 3
 4
 ```
+
+For more examples, check out the [`./examples`](./examples) directory.
 
 ## Usage
 

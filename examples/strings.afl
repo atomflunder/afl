@@ -1,0 +1,15 @@
+greeting = "Hello"
+name = "World"
+message = greeting + ", " + name + "!"
+
+print(message)
+
+x = 42
+y = "answer"
+print("The {y} is {x}")
+
+title = "afl Programming Language"
+version = "1.0"
+
+message_one = "Welcome to " + title + " v" + version
+print(message_one)

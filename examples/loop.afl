@@ -1,0 +1,19 @@
+x? = 4
+
+/*
+    Current value of x is 4
+    Current value of x is 5
+    Current value of x is 7
+    Current value of x is 10
+    Current value of x is 14
+*/
+
+for (i in 0->5) {
+    x = x + i
+    print("Current value of x is {x}")
+}
+
+// Infinite loops
+for (j in 0->Infinity) {
+    print(j)
+}

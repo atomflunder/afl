@@ -1,0 +1,24 @@
+person = {
+    name: "Alice",
+    age: "30",
+    city: "New York",
+}
+
+
+name = person.name
+age = person.age  
+city = person.city
+
+print(name)
+print(age)
+print(city)
+
+
+company = {
+    name: "TechCorp",
+    ceo: "Bob",
+    employees: "150",
+}
+
+print(company.name)
+print(company.ceo)

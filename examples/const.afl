@@ -1,0 +1,13 @@
+x? = "test!"
+y  = "test!"
+
+print("x: {x} - y: {y}")
+
+x = "Another Test!"
+y = "Another Test!"
+
+/* 
+Output: x: test! - y: test!
+x: Another Test! - y: test!
+*/
+print("x: {x} - y: {y}")

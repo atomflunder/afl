@@ -1,0 +1,32 @@
+fn a_function() {
+    print("Hello, World!")
+
+    return 42
+}
+
+a_function(); // Semicolon is optional
+a_function()
+
+print(a_function()) // 42
+
+fn add(x, y) {
+    return x + y
+}
+
+fn multiply(a, b) {
+    return a * b
+}
+
+print(add(5, 3))
+
+print(multiply(4, 7))
+
+result = add(multiply(2, 3), multiply(4, 5))
+print(result)
+
+fn concat(a, b) {
+    return a + b
+}
+
+message = concat("Hello ", "World")
+print(message)

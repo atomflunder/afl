@@ -1,0 +1,35 @@
+x = 5           // Type inference
+y: int = 6      // Explicit type annotation
+z: float = 7.0  // Explicit type annotation
+
+if (x > 3) {
+    print("x is greater than 3 but actually {x}")
+} elseif (x == 3) {
+    print("x is equal to 3")
+} else {
+    print("x is less than 3")
+}
+
+// Multiple nested conditions
+score = 85
+
+if (score > 89) {
+    print("Grade: A")
+} elseif (score > 79) {
+    print("Grade: B")
+} elseif (score > 69) {
+    print("Grade: C")
+} else {
+    print("Grade: F")
+}
+
+// String comparisons
+name = "Alice"
+
+if (name == "Alice") {
+    print("You are Alice!")
+}
+
+if (name != "Bob") {
+    print("You are not Bob")
+}
