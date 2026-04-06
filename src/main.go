@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"afl/src/parser"
+	"afl/src/runtime"
 )
 
 func main() {
@@ -42,9 +43,11 @@ func main() {
 	ast, err := parser.GetAst()
 
 	if err != nil {
-		fmt.Printf("Error tokenizing input: %s\n", err)
+		fmt.Printf("Error parsing input: %s\n", err)
 		return
 	}
 
-	fmt.Printf("Parsed AST: %+v\n", ast)
+	// Evaluate the AST
+	env := runtime.NewEnvironment(nil)
+	runtime.EvaluateProgram(ast, env)
 }
