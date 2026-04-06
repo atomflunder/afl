@@ -84,8 +84,8 @@ func (p *Parser) parseExpression() (Expression, error) {
 }
 
 type AssignmentExpression struct {
-	left  Expression
-	right Expression
+	Left  Expression
+	Right Expression
 }
 
 // Parses an assignment expression.
@@ -103,8 +103,8 @@ func (p *Parser) parseAssignmentExpression() (Expression, error) {
 		}
 
 		return AssignmentExpression{
-			left:  left,
-			right: right,
+			Left:  left,
+			Right: right,
 		}, nil
 	}
 
@@ -112,8 +112,8 @@ func (p *Parser) parseAssignmentExpression() (Expression, error) {
 }
 
 type Property struct {
-	value Expression
-	key   string
+	Value Expression
+	Key   string
 }
 
 // Parses an assignment expression for object literals, e.g. { x: 5, y: 10, }
@@ -139,8 +139,8 @@ func (p *Parser) parseObjectExpression() (Expression, error) {
 		}
 
 		properties = append(properties, Property{
-			key:   key.Value,
-			value: value,
+			Key:   key.Value,
+			Value: value,
 		})
 
 		// We want trailing commas to be required!
@@ -153,9 +153,9 @@ func (p *Parser) parseObjectExpression() (Expression, error) {
 }
 
 type BinaryExpression struct {
-	left     Expression
-	operator Token
-	right    Expression
+	Left     Expression
+	Operator Token
+	Right    Expression
 }
 
 // Parses any logical, comparison, additive, or multiplicative expression, based on operator precedence.
@@ -176,9 +176,9 @@ func (p *Parser) parseLogicalExpression() (Expression, error) {
 		}
 
 		left = BinaryExpression{
-			left:     left,
-			operator: operator,
-			right:    right,
+			Left:     left,
+			Operator: operator,
+			Right:    right,
 		}
 	}
 
@@ -203,9 +203,9 @@ func (p *Parser) parseComparisonExpression() (Expression, error) {
 		}
 
 		left = BinaryExpression{
-			left:     left,
-			operator: operator,
-			right:    right,
+			Left:     left,
+			Operator: operator,
+			Right:    right,
 		}
 	}
 
@@ -229,9 +229,9 @@ func (p *Parser) parseAdditiveExpression() (Expression, error) {
 		}
 
 		left = BinaryExpression{
-			left:     left,
-			operator: operator,
-			right:    right,
+			Left:     left,
+			Operator: operator,
+			Right:    right,
 		}
 	}
 
@@ -255,9 +255,9 @@ func (p *Parser) parseMultiplicativeExpression() (Expression, error) {
 		}
 
 		left = BinaryExpression{
-			left:     left,
-			operator: operator,
-			right:    right,
+			Left:     left,
+			Operator: operator,
+			Right:    right,
 		}
 	}
 
@@ -276,9 +276,9 @@ func (p *Parser) parseUnaryExpression() (Expression, error) {
 		}
 
 		return BinaryExpression{
-			left:     nil,
-			operator: operator,
-			right:    operand,
+			Left:     nil,
+			Operator: operator,
+			Right:    operand,
 		}, nil
 	}
 
@@ -300,8 +300,8 @@ func (p *Parser) parseCallMemberExpression() (Expression, error) {
 }
 
 type MemberExpression struct {
-	object   Expression
-	property string
+	Object   Expression
+	Property string
 }
 
 // Parses member expressions, e.g. foo.bar.baz
@@ -318,8 +318,8 @@ func (p *Parser) parseMemberExpression() (Expression, error) {
 		p.expectType(Identifier)
 
 		obj = MemberExpression{
-			object:   obj,
-			property: propertyToken.Value,
+			Object:   obj,
+			Property: propertyToken.Value,
 		}
 
 	}
@@ -328,15 +328,15 @@ func (p *Parser) parseMemberExpression() (Expression, error) {
 }
 
 type IdentifierExpression struct {
-	symbol string
+	Symbol string
 }
 
 type NumberLiteralExpression struct {
-	value string
+	Value string
 }
 
 type StringLiteralExpression struct {
-	value string
+	Value string
 }
 
 // Parses primary expressions: identifiers, number literals, string literals, parenthesized expressions, and object literals.
@@ -345,15 +345,15 @@ func (p *Parser) parsePrimaryExpression() (Expression, error) {
 	case Identifier:
 		identifier := p.at(0)
 		p.shiftTokens(1)
-		return IdentifierExpression{symbol: identifier.Value}, nil
+		return IdentifierExpression{Symbol: identifier.Value}, nil
 	case NumberLiteral:
 		number := p.at(0)
 		p.shiftTokens(1)
-		return NumberLiteralExpression{value: number.Value}, nil
+		return NumberLiteralExpression{Value: number.Value}, nil
 	case StringLiteral:
 		str := p.at(0)
 		p.shiftTokens(1)
-		return StringLiteralExpression{value: str.Value}, nil
+		return StringLiteralExpression{Value: str.Value}, nil
 	default:
 		return nil, fmt.Errorf("unexpected token type: %v %v", p.at(0).Type, p.tokens)
 	}
@@ -395,8 +395,8 @@ func (p *Parser) parseArgsList() ([]Expression, error) {
 }
 
 type CallExpression struct {
-	caller Expression
-	args   []Expression
+	Caller Expression
+	Args   []Expression
 }
 
 // Parses a function call expression, e.g. foo(x, y, z)
@@ -428,17 +428,17 @@ func (p *Parser) parseCallExpression(caller Expression) (CallExpression, error) 
 	}
 
 	callExpr := CallExpression{
-		caller: caller,
-		args:   args,
+		Caller: caller,
+		Args:   args,
 	}
 
 	return callExpr, nil
 }
 
 type VariableDeclaration struct {
-	isMutable bool
-	name      string
-	value     Expression
+	IsMutable bool
+	Name      string
+	Value     Expression
 }
 
 // Parses variable declarations, e.g. x = 5, y: int = 6, a? = 10
@@ -494,16 +494,16 @@ func (p *Parser) parseVariableDeclaration() (VariableDeclaration, error) {
 	}
 
 	return VariableDeclaration{
-		isMutable: isMutable,
-		name:      name,
-		value:     value,
+		IsMutable: isMutable,
+		Name:      name,
+		Value:     value,
 	}, nil
 }
 
 type FunctionDeclaration struct {
-	name       string
-	parameters []string
-	body       []Expression
+	Name       string
+	Parameters []string
+	Body       []Expression
 }
 
 // Parses function declarations, e.g. fun foo(x, y) { return x + y }
@@ -531,9 +531,9 @@ func (p *Parser) parseFunctionDeclaration() (FunctionDeclaration, error) {
 	}
 
 	fn := FunctionDeclaration{
-		name:       name,
-		parameters: params,
-		body:       body,
+		Name:       name,
+		Parameters: params,
+		Body:       body,
 	}
 
 	return fn, nil
@@ -562,7 +562,7 @@ func (p *Parser) parseParams() []string {
 		return params
 	}
 
-	params = append(params, identExpr.symbol)
+	params = append(params, identExpr.Symbol)
 
 	for p.notEof() && p.at(0).Type == Comma {
 		p.shiftTokens(1)
@@ -577,7 +577,7 @@ func (p *Parser) parseParams() []string {
 			return params
 		}
 
-		params = append(params, identExpr.symbol)
+		params = append(params, identExpr.Symbol)
 	}
 
 	return params
@@ -629,15 +629,15 @@ func (p *Parser) parseFunctionBody() ([]Expression, error) {
 }
 
 type Branch struct {
-	condition Expression
-	body      []Expression
+	Condition Expression
+	Body      []Expression
 }
 
 type IfStatement struct {
-	condition      Expression
-	ifBranch       Branch
-	elseIfBranches []Branch
-	elseBranch     Branch
+	Condition      Expression
+	IfBranch       Branch
+	ElseIfBranches []Branch
+	ElseBranch     Branch
 }
 
 // Parses if statements, including else if and else branches.
@@ -690,8 +690,8 @@ func (p *Parser) parseIfStatement() (IfStatement, error) {
 		}
 
 		elseIfBranch := Branch{
-			condition: elseIfCondition,
-			body:      elseIfBody,
+			Condition: elseIfCondition,
+			Body:      elseIfBody,
 		}
 
 		elseIfBranches = append(elseIfBranches, elseIfBranch)
@@ -707,15 +707,15 @@ func (p *Parser) parseIfStatement() (IfStatement, error) {
 		}
 
 		elseBranch = Branch{
-			body: elseBody,
+			Body: elseBody,
 		}
 	}
 
 	return IfStatement{
-		condition:      condition,
-		ifBranch:       Branch{condition: condition, body: body},
-		elseIfBranches: elseIfBranches,
-		elseBranch:     elseBranch,
+		Condition:      condition,
+		IfBranch:       Branch{Condition: condition, Body: body},
+		ElseIfBranches: elseIfBranches,
+		ElseBranch:     elseBranch,
 	}, nil
 }
 
@@ -742,10 +742,10 @@ func (p *Parser) parseBlock() ([]Expression, error) {
 }
 
 type ForLoop struct {
-	iterator string
-	start    Expression
-	end      Expression
-	body     []Expression
+	Iterator string
+	Start    Expression
+	End      Expression
+	Body     []Expression
 }
 
 // Parses for loops, e.g. for (i in 0 -> 10) { ... }
@@ -795,10 +795,10 @@ func (p *Parser) parseForLoop() (ForLoop, error) {
 	}
 
 	return ForLoop{
-		iterator: iterator,
-		start:    start,
-		end:      end,
-		body:     body,
+		Iterator: iterator,
+		Start:    start,
+		End:      end,
+		Body:     body,
 	}, nil
 }
 

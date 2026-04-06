@@ -83,12 +83,12 @@ func TestParseVariableDeclaration(t *testing.T) {
 					return
 				}
 
-				if varDecl.name != tt.expectedName {
-					t.Errorf("Expected name %s, got %s", tt.expectedName, varDecl.name)
+				if varDecl.Name != tt.expectedName {
+					t.Errorf("Expected name %s, got %s", tt.expectedName, varDecl.Name)
 				}
 
-				if varDecl.isMutable != tt.expectedMutable {
-					t.Errorf("Expected mutable %v, got %v", tt.expectedMutable, varDecl.isMutable)
+				if varDecl.IsMutable != tt.expectedMutable {
+					t.Errorf("Expected mutable %v, got %v", tt.expectedMutable, varDecl.IsMutable)
 				}
 			}
 		})
@@ -153,15 +153,15 @@ func TestParseFunctionDeclaration(t *testing.T) {
 					return
 				}
 
-				if funcDecl.name != tt.expectedFuncName {
-					t.Errorf("Expected function name %s, got %s", tt.expectedFuncName, funcDecl.name)
+				if funcDecl.Name != tt.expectedFuncName {
+					t.Errorf("Expected function name %s, got %s", tt.expectedFuncName, funcDecl.Name)
 				}
 
-				if len(funcDecl.parameters) != tt.expectedParamCount {
-					t.Errorf("Expected %d parameters, got %d", tt.expectedParamCount, len(funcDecl.parameters))
+				if len(funcDecl.Parameters) != tt.expectedParamCount {
+					t.Errorf("Expected %d parameters, got %d", tt.expectedParamCount, len(funcDecl.Parameters))
 				}
 
-				if len(funcDecl.body) == 0 {
+				if len(funcDecl.Body) == 0 {
 					t.Errorf("Expected function body, got empty")
 				}
 			}
@@ -224,11 +224,11 @@ func TestParseIfStatement(t *testing.T) {
 					return
 				}
 
-				if ifStmt.condition == nil {
+				if ifStmt.Condition == nil {
 					t.Errorf("Expected condition in if statement")
 				}
 
-				if len(ifStmt.ifBranch.body) == 0 {
+				if len(ifStmt.IfBranch.Body) == 0 {
 					t.Errorf("Expected if branch body")
 				}
 			}
@@ -284,19 +284,19 @@ func TestParseForLoop(t *testing.T) {
 					return
 				}
 
-				if forLoop.iterator != tt.expectedIterator {
-					t.Errorf("Expected iterator %s, got %s", tt.expectedIterator, forLoop.iterator)
+				if forLoop.Iterator != tt.expectedIterator {
+					t.Errorf("Expected iterator %s, got %s", tt.expectedIterator, forLoop.Iterator)
 				}
 
-				if forLoop.start == nil {
+				if forLoop.Start == nil {
 					t.Errorf("Expected start expression")
 				}
 
-				if forLoop.end == nil {
+				if forLoop.End == nil {
 					t.Errorf("Expected end expression")
 				}
 
-				if len(forLoop.body) == 0 {
+				if len(forLoop.Body) == 0 {
 					t.Errorf("Expected loop body")
 				}
 			}
@@ -362,18 +362,18 @@ func TestParseFunctionCall(t *testing.T) {
 					return
 				}
 
-				idExpr, ok := callExpr.caller.(IdentifierExpression)
+				idExpr, ok := callExpr.Caller.(IdentifierExpression)
 				if !ok {
-					t.Errorf("Expected IdentifierExpression as caller, got %T", callExpr.caller)
+					t.Errorf("Expected IdentifierExpression as caller, got %T", callExpr.Caller)
 					return
 				}
 
-				if idExpr.symbol != tt.expectedFunctionName {
-					t.Errorf("Expected function %s, got %s", tt.expectedFunctionName, idExpr.symbol)
+				if idExpr.Symbol != tt.expectedFunctionName {
+					t.Errorf("Expected function %s, got %s", tt.expectedFunctionName, idExpr.Symbol)
 				}
 
-				if len(callExpr.args) != tt.expectedArgumentCount {
-					t.Errorf("Expected %d arguments, got %d", tt.expectedArgumentCount, len(callExpr.args))
+				if len(callExpr.Args) != tt.expectedArgumentCount {
+					t.Errorf("Expected %d arguments, got %d", tt.expectedArgumentCount, len(callExpr.Args))
 				}
 			}
 		})
@@ -998,7 +998,7 @@ func TestParseTypeAnnotations(t *testing.T) {
 					return
 				}
 
-				if varDecl.value == nil {
+				if varDecl.Value == nil {
 					t.Errorf("Expected value in variable declaration")
 				}
 			}
