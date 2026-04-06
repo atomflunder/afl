@@ -47,7 +47,7 @@ func (e *Environment) assignVariable(name string, value any) error {
 		return nil
 	}
 
-	return e.declareVariable(name, value, true)
+	return e.declareVariable(name, value, false)
 }
 
 func (e *Environment) getVariable(name string) (any, error) {
