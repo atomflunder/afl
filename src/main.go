@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"AtomflundersProgrammingLanguage/src/parser"
+	"afl/src/parser"
 )
 
 func main() {
