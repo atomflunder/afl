@@ -1,7 +1,6 @@
 # afl
 
-Work in progress of a very simple scripting language that will bring literally nothing new to the table.  
-Even the name is a work in progress.
+Very simple scripting language that will bring literally nothing new to the table.
 
 ## Examples
 
