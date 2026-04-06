@@ -55,6 +55,8 @@ func Evaluate(expr parser.Expression, env *Environment) RuntimeValue {
 		return evaluateObjectLiteral(node, env)
 	case parser.MemberExpression:
 		return evaluateMemberExpression(node, env)
+	case parser.InfinityExpression:
+		return RuntimeValue{Type: "infinity", Value: nil}
 	default:
 		return RuntimeValue{Type: "null", Value: nil}
 	}
@@ -444,6 +446,28 @@ func evaluateForLoop(node parser.ForLoop, env *Environment) RuntimeValue {
 
 	start := Evaluate(node.Start, env)
 	end := Evaluate(node.End, env)
+
+	if end.Type == "infinity" {
+		startVal := uint(0)
+		if start.Type == "number" {
+			startVal = uint(start.Value.(float64))
+		}
+
+		result := RuntimeValue{Type: "null", Value: nil}
+		// Maximum value for a uint type.
+		const maxIterations = ^uint(0)
+		for i := startVal; i < startVal+maxIterations; i++ {
+			scope.assignVariable(node.Iterator, RuntimeValue{Type: "number", Value: float64(i)})
+
+			for _, stmt := range node.Body {
+				result = Evaluate(stmt, scope)
+				if result.Type == "return" {
+					return result
+				}
+			}
+		}
+		return result
+	}
 
 	if start.Type != "number" || end.Type != "number" {
 		return RuntimeValue{Type: "null", Value: nil}

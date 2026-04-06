@@ -6,17 +6,18 @@ import (
 
 func getKeywords() map[string]TokenType {
 	return map[string]TokenType{
-		"if":     If,
-		"else":   Else,
-		"elseif": ElseIf,
-		"for":    For,
-		"return": Return,
-		"fn":     Function,
-		"in":     In,
-		"int":    IntType,
-		"string": StringType,
-		"bool":   BoolType,
-		"float":  FloatType,
+		"if":       If,
+		"else":     Else,
+		"elseif":   ElseIf,
+		"for":      For,
+		"return":   Return,
+		"fn":       Function,
+		"in":       In,
+		"int":      IntType,
+		"string":   StringType,
+		"bool":     BoolType,
+		"float":    FloatType,
+		"Infinity": Infinity,
 	}
 }
 
@@ -98,6 +99,7 @@ const (
 	StringType TokenType = "StringType"
 	BoolType   TokenType = "BoolType"
 	FloatType  TokenType = "FloatType"
+	Infinity   TokenType = "Infinity"
 )
 
 type Token struct {

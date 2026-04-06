@@ -334,6 +334,8 @@ type StringLiteralExpression struct {
 	Value string
 }
 
+type InfinityExpression struct{}
+
 // Parses primary expressions: identifiers, number literals, string literals, parenthesized expressions, and object literals.
 func (p *Parser) parsePrimaryExpression() (Expression, error) {
 	switch p.at(0).Type {
@@ -349,6 +351,9 @@ func (p *Parser) parsePrimaryExpression() (Expression, error) {
 		str := p.at(0)
 		p.shiftTokens(1)
 		return StringLiteralExpression{Value: str.Value}, nil
+	case Infinity:
+		p.shiftTokens(1)
+		return InfinityExpression{}, nil
 	default:
 		return nil, fmt.Errorf("unexpected token type: %v %v", p.at(0).Type, p.tokens)
 	}
